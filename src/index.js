@@ -1,13 +1,13 @@
 import express from 'express';
-const PORT = process.env.PORT || 3000;
+import { PORT } from './config.js';
+
+import productsRouter from './routes/products.route.js';
 
 const app = express();
 app.use(express.json());
 
-// Ejemplo de ruta base
-app.get('/', (req, res) => {
-  res.send('API is running');
-});
+// Endpoints
+app.use('/api/products', productsRouter);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
