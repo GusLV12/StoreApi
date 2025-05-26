@@ -1,0 +1,135 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(uuid())
+  username  String
+  email     String    @unique
+  phone     String
+  password  String
+  role      String
+  sales     Sale[]
+  cashCuts  CashCut[]
+}
+
+model Sale {
+  id            String           @id @default(uuid())
+  date          DateTime
+  total         Float
+  subtotal      Float
+  iva           Float
+  paymentType   String
+  user          User             @relation(fields: [userId], references: [id])
+  userId        String
+  productSales  ProductSale[]
+  promotions    SalesPromotions[]
+  credit        Credit?
+}
+
+model Product {
+  id            String          @id @default(uuid())
+  barcode       String          @unique
+  name          String
+  description   String
+  purchaseCost  Float
+  saleCost      Float
+  stock         Float
+  supplier      Supplier        @relation(fields: [supplierId], references: [id])
+  supplierId    String
+  department    Department      @relation(fields: [departmentId], references: [id])
+  departmentId  String
+  type          Type            @relation(fields: [typeId], references: [id])
+  typeId        String
+  sales         ProductSale[]
+  changes       ProductChange[]
+}
+
+model ProductSale {
+  id         String   @id @default(uuid())
+  quantity   Int
+  price      Float
+  iva        Float
+  sale       Sale     @relation(fields: [saleId], references: [id])
+  saleId     String
+  product    Product  @relation(fields: [productId], references: [id])
+  productId  String
+}
+
+model Supplier {
+  id           String    @id @default(uuid())
+  companyName  String
+  contactName  String
+  phone        String
+  email        String
+  address      String
+  status       String
+  products     Product[]
+}
+
+model Promotion {
+  id         String           @id @default(uuid())
+  type       String
+  startDate  DateTime
+  endDate    DateTime
+  sales      SalesPromotions[]
+}
+
+model SalesPromotions {
+  id           String     @id @default(uuid())
+  sale         Sale       @relation(fields: [saleId], references: [id])
+  saleId       String
+  promotion    Promotion  @relation(fields: [promotionId], references: [id])
+  promotionId  String
+}
+
+model Credit {
+  id         String         @id @default(uuid())
+  amount     Float
+  status     String
+  sale       Sale           @relation(fields: [saleId], references: [id])
+  saleId     String         @unique
+  changes    CreditChange[]
+}
+
+model CreditChange {
+  id           String   @id @default(uuid())
+  credit       Credit   @relation(fields: [creditId], references: [id])
+  creditId     String
+  changeAmount Float
+  date         DateTime
+}
+
+model CashCut {
+  id        String   @id @default(uuid())
+  seller    User     @relation(fields: [sellerId], references: [id])
+  sellerId  String
+  cash      Float
+  credit    Float
+  date      DateTime
+}
+
+model ProductChange {
+  id          String   @id @default(uuid())
+  product     Product  @relation(fields: [productId], references: [id])
+  productId   String
+  changeType  String
+  date        DateTime
+}
+
+model Department {
+  id      String    @id @default(uuid())
+  name    String
+  products Product[]
+}
+
+model Type {
+  id      String    @id @default(uuid())
+  name    String
+  products Product[]
+}
