@@ -11,8 +11,8 @@ model User {
   id        String    @id @default(uuid())
   username  String
   email     String    @unique
-  phone     String
-  password  String
+  phone     String?
+  password  String?
   role      String
   sales     Sale[]
   cashCuts  CashCut[]
@@ -34,9 +34,9 @@ model Sale {
 
 model Product {
   id            String          @id @default(uuid())
-  barcode       String          @unique
+  barcode       String?          @unique
   name          String
-  description   String
+  description   String?
   purchaseCost  Float
   saleCost      Float
   stock         Float
@@ -63,9 +63,9 @@ model ProductSale {
 
 model Supplier {
   id           String    @id @default(uuid())
-  companyName  String
+  companyName  String?
   contactName  String
-  phone        String
+  phone        String?
   email        String
   address      String
   status       String
