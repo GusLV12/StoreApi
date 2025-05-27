@@ -1,5 +1,4 @@
 import prisma from '../config/prismaClient.js';
-import { generateUUID } from '../service/uuid.js';
 
 export const getAllProducts = async (req, res) => {
   try {
@@ -15,7 +14,6 @@ export const createProduct = async (req, res) => {
   try {
     const newProduct = await prisma.product.create({
       data: {
-        id: generateUUID(),
         ...req.body
       }
     });
@@ -30,7 +28,7 @@ export const getProductById = async (req, res) => {
   try {
     const { id } = req.params;
     const product = await prisma.product.findUnique({
-      where: { id: parseInt(id, 10) }
+      where: { id }
     });
     if (!product) {
       return res.status(404).json({ error: 'Product not found' });
@@ -59,7 +57,7 @@ export const deleteProductById = async (req, res) => {
   try {
     const { id } = req.params;
     const deletedProduct = await prisma.product.delete({
-      where: { id: parseInt(id, 10) }
+      where: { id }
     });
     res.status(200).json(deletedProduct);
   } catch (error) {
