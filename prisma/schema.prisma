@@ -20,7 +20,7 @@ model User {
 
 model Sale {
   id            String           @id @default(uuid())
-  date          DateTime
+  date          DateTime @default(now())
   total         Float
   subtotal      Float
   iva           Float
@@ -102,7 +102,7 @@ model CreditChange {
   credit       Credit   @relation(fields: [creditId], references: [id])
   creditId     String
   changeAmount Float
-  date         DateTime
+  date         DateTime @default(now())
 }
 
 model CashCut {
@@ -111,7 +111,7 @@ model CashCut {
   sellerId  String
   cash      Float
   credit    Float
-  date      DateTime
+  date      DateTime @default(now())
 }
 
 model ProductChange {
@@ -119,7 +119,7 @@ model ProductChange {
   product     Product  @relation(fields: [productId], references: [id])
   productId   String
   changeType  String
-  date        DateTime
+  date        DateTime @default(now())
 }
 
 model Department {
