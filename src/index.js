@@ -13,6 +13,7 @@ import productsPromotionsRouter from './routes/salesPromotions.route.js';
 import creditsRouter from './routes/credits.route.js';
 import creditChangesRouter from './routes/creditChange.route.js';
 import productsChangeRouter from './routes/productChange.route.js';
+import cashCutRouter from './routes/cashCut.route.js';
 
 const app = express();
 app.use(express.json());
@@ -30,6 +31,7 @@ app.use('/api/sales-promotions', productsPromotionsRouter);
 app.use('/api/promotions', promotionRouter);
 app.use('/api/credits', creditsRouter);
 app.use('/api/credit-changes', creditChangesRouter);
+app.use('/api/cash-cuts', cashCutRouter);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

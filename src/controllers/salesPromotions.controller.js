@@ -18,15 +18,19 @@ export const getAllSalesPromotions = async (req, res) => {
 export const createSalesPromotion = async (req, res) => {
   try {
     const { saleId, promotionId } = req.body;
-    const newSalesPromotion = await prisma.salesPromotions.create({
+    const newRelation = await prisma.salesPromotions.create({
       data: {
         saleId,
         promotionId
+      },
+      include: {
+        sale: true,
+        promotion: true
       }
     });
-    res.status(201).json(newSalesPromotion);
+    res.status(201).json(newRelation);
   } catch (error) {
-    console.error('Error creating sales promotion:', error);
+    console.error('Error creating sales-promotion relation:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };

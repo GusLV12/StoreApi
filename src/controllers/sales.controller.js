@@ -18,16 +18,9 @@ export const getAllSales = async (req, res) => {
 };
 
 export const createSale = async (req, res) => {
-  try {
-    const {
-      userId,
-      total,
-      subtotal,
-      iva,
-      paymentType,
-      productSales
-    } = req.body;
+  const { userId, total, subtotal, iva, paymentType, productSales } = req.body;
 
+  try {
     const newSale = await prisma.sale.create({
       data: {
         userId,
@@ -48,6 +41,23 @@ export const createSale = async (req, res) => {
         productSales: true
       }
     });
+
+    //  Actualiza stock y crea ProductChange por cada producto vendido
+    for (const ps of productSales) {
+      await prisma.product.update({
+        where: { id: ps.productId },
+        data: {
+          stock: { decrement: ps.quantity }
+        }
+      });
+
+      await prisma.productChange.create({
+        data: {
+          productId: ps.productId,
+          changeType: 'Venta'
+        }
+      });
+    }
 
     res.status(201).json(newSale);
   } catch (error) {
