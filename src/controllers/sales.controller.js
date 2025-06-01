@@ -21,12 +21,20 @@ export const createSale = async (req, res) => {
   try {
     const {
       userId,
+      total,
+      subtotal,
+      iva,
+      paymentType,
       productSales
     } = req.body;
 
     const newSale = await prisma.sale.create({
       data: {
         userId,
+        total,
+        subtotal,
+        iva,
+        paymentType,
         productSales: {
           create: productSales.map(ps => ({
             productId: ps.productId,
@@ -34,8 +42,7 @@ export const createSale = async (req, res) => {
             price: ps.price,
             iva: ps.iva
           }))
-        },
-        ...req.body
+        }
       },
       include: {
         productSales: true
