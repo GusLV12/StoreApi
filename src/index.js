@@ -8,6 +8,8 @@ import typeRouter from './routes/types.route.js';
 import salesRouter from './routes/sales.route.js';
 import productsSaleRouter from './routes/productsSale.route.js';
 import userRoutes from './routes/users.route.js';
+import promotionRouter from './routes/promotion.route.js';
+import productsPromotionsRouter from './routes/salesPromotions.route.js';
 
 const app = express();
 app.use(express.json());
@@ -20,6 +22,8 @@ app.use('/api/types', typeRouter);
 app.use('/api/sales', salesRouter);
 app.use('/api/product-sale', productsSaleRouter);
 app.use('/api/users', userRoutes);
+app.use('/api/promotions', promotionRouter);
+app.use('/api/sales-promotions', productsPromotionsRouter);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
