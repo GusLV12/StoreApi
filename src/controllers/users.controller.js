@@ -1,4 +1,5 @@
 import prisma from '../config/prismaClient.js';
+import { hashPassword } from '../service/hashPassword.js';
 
 export const getAllUsers = async (req, res) => {
   try {
@@ -27,10 +28,12 @@ export const getUserById = async (req, res) => {
 };
 
 export const createUser = async (req, res) => {
+  const hashedPassword = await hashPassword(req.body.password);
   try {
     const newUser = await prisma.user.create({
       data: {
-        ...req.body
+        ...req.body,
+        password: hashedPassword
       }
     });
     res.status(201).json(newUser);

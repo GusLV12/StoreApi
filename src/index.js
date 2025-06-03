@@ -1,6 +1,7 @@
 import express from 'express';
 import { PORT } from './config/config.js';
 
+import authRouter from './routes/auth/auth.route.js';
 import productsRouter from './routes/products.route.js';
 import suppliersRouter from './routes/suppliers.route.js';
 import departmentRouter from './routes/department.route.js';
@@ -18,6 +19,8 @@ import cashCutRouter from './routes/cashCut.route.js';
 const app = express();
 app.use(express.json());
 
+// Rutas de autenticación
+app.use('/api/auth', authRouter);
 // Endpoints
 app.use('/api/products', productsRouter);
 app.use('/api/product-sale', productsSaleRouter);
